@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <!-- 端末の画面の大きさに合わせる -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- SEO部分 -->
+  <title>学生団体Hand to Hand ホームページ</title>
+  <meta name="description" content="学生団体Hand to Hand のホームページです。">
+  <!-- body用のフォントの読み込み　-->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP&display=swap" rel="stylesheet">
+  <!-- CSS -->
+  <style>
+    /* 全てのタグにデフォルトでついているスタイルをリセット これがないと<h1>にデフォルトでついているfont-weight: bold;の影響でFredericka the Greatがつぶれる*/
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; font-weight: normal;}
+
+    img {
+      max-width: 100%;
+    }
+    /* ページ内リンクのジャンプをアニメーションで行う */
+    html { scroll-behavior: smooth; }
+    /* サイト全体で使う色・サイズの変数 */
+    /* ★変更ポイント: 色を変えたい場合はここの値を変える */
+    :root {
+      --gold: #FFCC00;      /* ナビゲーションバーの背景色 */
+      --dark: #4a4a4a;      /* 本文テキスト・フッター背景色 */
+      --white: #fff;        /* 基本の白 */
+      --site-width: 980px;  /* サイト全体の最大横幅 */
+    }
+
+    body {
+      font-family: 'Noto Serif JP', 'メイリオ', meiryo, sans-serif;
+      /* ↑ Noto Serif JPが読み込めない環境ではメイリオ、それもなければsans-serifで表示　保留 */
+      background: var(--white);
+      color: var(--dark);
+      -webkit-font-smoothing: antialiased; /* MacとiOSでフォントをなめらかに描画する */
+    }
+
+    /* リンク全体の下線と文字色をリセット（各パーツで個別に上書きする） */
+    a { text-decoration: none; color: inherit; }
+
+
+
+    /* サイトタイトル「Hand to Hand」 */
+    @font-face {
+      font-family: 'Fredericka the Great';
+      src: url('FrederickatheGreat-Regular.ttf') format('truetype');
+    }
+    .site-title {
+      text-align: center;
+      font-family: 'Fredericka the Great', fantasy;
+      font-size: 57px;
+      color: #666;
+      padding-bottom: 20px;
+    }
+
+    /* ── ナビゲーションバー ── */
+    nav {
+      background: var(--gold); /* 金色の背景 */
+      width: 100%;
+      position: sticky; /* スクロールしても画面上部に固定される */
+      top: 0;           /* 画面の上端にくっつける */
+      z-index: 100;     /* 他の要素より手前に表示（画像などに隠れないように） */
+    }
+    /* ナビゲーション内のリンクを中央に並べるラッパー */
+    .nav-inner {
+      max-width: var(--site-width);
+      margin: 0 auto; /* 左右中央に配置 */
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap; /* 画面が狭いとき折り返す */
+    }
+    /* 各ナビゲーションリンク */
+    nav a {
+      display: inline-block;
+      padding: 0 18px;
+      height: 69px;         /* ★変更ポイント: ナビの高さ */
+      line-height: 69px;    /* heightと同じ値にすることでテキストを縦中央に揃える */
+      font-size: 12px;
+      color: var(--dark);
+      transition: background .3s; /* ホバー時に背景色がふわっと変わる */
+      white-space: nowrap;
+    }
+    /* マウスを乗せたときリンクを薄い金色で強調 現在視界に入っているところを強調 */
+    nav a:hover, nav a.active{ background: rgba(255,229,127,.8); }
+
+    /* ── メインコンテンツエリア ── */
+    main {
+      max-width: var(--site-width);
+      margin: 0 auto; /* 左右中央に配置 */
+      padding: 0 0 40px;
+      overflow: hidden; /* ← 追加 */
+    }
+
+    /* ヒーロー画像（ページ上部の大きな横断画像） */
+    .hero {
+      margin: 0 auto;
+      width: 877px;
+      max-width: 100%;
+      position: relative;
+    }
+    .hero img {
+      width: 100%;
+      height: 428px;
+      object-fit: cover;
+      display: block;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.45));
+      display: flex;
+      align-items: flex-end;
+      padding: 28px 36px;
+    }
+    .hero-caption {
+      color: #fff;
+      font-size: 15px;
+      line-height: 1.6;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+    }
+    .hero-caption strong {
+      display: block;
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    /* 目次　下線と余白 */
+    .index {
+    margin-top: 30px;
+    margin-bottom: 15px; 
+    padding-bottom: 3px;
+    border-bottom: 2px solid #7b95b8;
+    width: 100%;
+    display: block;
+    opacity: 0;
+    transform: translateY(10px);
+    /* 目次と下線が現れる速さ */
+    transition: opacity 2.0s ease, transform 1.6s ease;
+    }
+    .index.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    /* ヘッダで目次が隠れないようにジャンプ先のスペースを空ける */
+    #nav1, #nav2, #nav3,#nav4 {
+        scroll-margin-top: 80px;
+    }
+    h3 {
+        margin-top: 15px;
+        margin-bottom: 5px; 
+    }
+    /* テキストと写真のセクション（左右2カラム） */
+    .content-box {
+      display: flex;
+      gap: 32px;
+      padding: 40px 24px 0;
+      align-items: flex-start; /* 左右の高さが違っても上揃えにする */
+    }
+    /* 写真のアニメーション */
+    .content-right img {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 2.0s ease, transform 1.2s ease;
+    }
+    .content-right img.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* 右カラム: 団体説明文と活動写真 */
+    .content-right {
+      flex: 1; /* 左カラムの残りの横幅を全部使う */
+    }
+    .content-right p {
+      font-size: 18px;
+      line-height: 1.7; /* 行間を広めにして読みやすく */
+      margin-bottom: .6em;
+    }
+
+    /* ── フッター ── */
+    footer {
+      background: var(--dark);
+      color: #d6d6d6;
+      padding: 40px 0 30px;
+    }
+    /* フッター内を横並びにするラッパー */
+    .footer-inner {
+      max-width: var(--site-width);
+      margin: 0 auto;
+      display: flex;
+      gap: 0;
+      align-items: stretch;
+      padding: 0 20px;
+      justify-content: center
+    }
+    /* フッターの各列 */
+    .footer-col {
+      padding: 0 28px;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    /* 最後の列以外の右側に区切り線を引く */
+    .footer-col:not(:last-child) {
+      border-right: 1px solid #d6d6d6;
+    }
+    /* 「mail」などの小さいラベル */
+    .footer-col .label { font-size: 11px; margin-bottom: 4px; }
+
+    /* コピーライト表記 */
+    .footer-copy { font-size: 11px; color: #d6d6d6; }
+
+    /* スマホ画面用の縦並び */
+    @media (max-width: 600px) {
+      .footer-inner {
+        flex-direction: column;  
+        align-items: flex-start;
+        gap: 16px;
+        padding: 0 24px;
+      }
+      .footer-col {
+        padding: 0;
+        width: 100%;
+      }
+      /* 縦並びなので右区切り線をなくし、下線に変える */
+      .footer-col:not(:last-child) {
+        border-right: none;
+        border-bottom: 1px solid #888;
+        padding-bottom: 16px;
+      }
+    }
+
+    /* ── 部署カード ── */
+    .dept-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+      margin-bottom: 20px;
+    }
+    .dept-card {
+      border-radius: 10px;
+      border: 1px solid #c9d9ec;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .dept-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(123,149,184,0.25);
+    }
+    /* カード上部: 薄い青 */
+    .dept-card-header {
+      background: #d6e4f0;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #2c4a6e;
+    }
+    .dept-icon { font-size: 18px; line-height: 1; }
+    /* カード下部: 白 */
+    .dept-card-body {
+      background: #fff;
+      padding: 14px 16px;
+      font-size: 14px;
+      line-height: 1.85;
+      color: var(--dark);
+    }
+    .dept-card-body li {
+      list-style: none;
+      padding-left: 1.1em;
+      position: relative;
+    }
+    .dept-card-body li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: #7b95b8;
+      font-size: 11px;
+      top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <!-- ヘッダー -->
+  <header>
+    <!-- サイトタイトル -->
+    <h1 class="site-title" id="nav1">Hand to Hand</h1>
+    <!-- ナビゲーション。-->
+  </header>
+
+  <!-- navはmax-width: var(--site-width)の影響を避けるためmainタグの外に -->
+ <nav>
+    <div class="nav-inner">
+      <a href="#nav1">HOME</a>
+      <a href="#nav2">団体概要</a>
+      <a href="#nav3">活動内容</a>
+      <a href="#nav4">部署説明</a>
+      <!-- ★変更ポイント: SNSアカウントのURLが変わった場合はhrefの中を変更 -->
+      <a href="https://twitter.com/handtohand1" target="_blank">Twitter</a>
+      <a href="https://marshmallow-qa.com/km4x4ieyxpgmg33?t=Spr6Ko&utm_medium=url_text&utm_source=promotion" target="_blank">マシュマロ</a>
+    </div>
+  </nav>
+    <!-- メインコンテンツ -->
+  <main>
+    <!-- ヒーロー画像 -->
+    <div class="hero">
+      <img
+        src="title.jpg"
+        alt="Hand to Hand メインビジュアル"
+        width="877" height="428"
+        fetchpriority="high">
+      <div class="hero-overlay">
+        <div class="hero-caption">
+          <strong>Hand to Hand</strong>
+          武蔵野大学の薬学生が立ち上げた、教科書販売でワクチンを届ける学生団体
+        </div>
+      </div>
+    </div>
+
+    <!-- テキストと写真のセクション（左右2カラム） -->
+    <div class="content-box">
+      <!-- 右カラム: 団体説明文と活動写真 -->
+      <div class="content-right">
+        <!-- ★変更ポイント: 団体の説明文はここを編集する -->
+        <h1 class="index" id="nav2">団体概要</h1>
+        <p> ここに文章を入力
+        </p>
+        <h1 class="index" id="nav3">活動内容</h1>
+        <h3>・3、4月　教科書販売</h3>
+        <div style="display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-bottom:.6em; flex-direction:row-reverse;">
+            <p style="flex:1; min-width:200px;">
+                ここに文章を入力
+            </p>
+            <img src="textbook.jpg" alt="教科書販売の様子"
+                style="width:300px; height:230px; object-fit:cover; border-radius:4px; object-fit:cover; border-radius:4px; max-width:100%;">
+        </div>
+        <h3>・8月　大学祭出店(摩耶祭)</h3>
+        <div style="display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-bottom:.6em; flex-direction:row-reverse;">
+            <p style="flex:1; min-width:200px;">
+                ここに文章を入力
+            </p>
+            <img src="festival.jpg" alt="大学祭での出店の様子"
+                style="width:300px; height:230px; object-fit:cover; border-radius:4px; object-fit:cover; border-radius:4px; max-width:100%;">
+        </div>
+        <h3>・12月　クリスマス会</h3>
+        <div style="display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-bottom:.6em; flex-direction:row-reverse;">
+            <p style="flex:1; min-width:200px;">
+                ここに文章を入力
+            </p>
+            <img src="christmas.jpg" alt="クリスマス会の様子"
+                style="width:300px; height:230px; object-fit:cover; border-radius:4px; object-fit:cover; border-radius:4px; max-width:100%;">
+        </div>
+        <h3>・不定期</h3>
+        <p> ここに文章を入力<br>
+            ボランティア(ゴミ拾いやマラソンのスタッフなど)<br>
+            各部署の活動
+        </p>
+        <h1 class="index" id="nav4">部署説明</h1>
+        <div class="dept-grid">
+
+          <div class="dept-card">
+            <div class="dept-card-header">
+              <span class="dept-icon">📋</span>総務
+            </div>
+            <div class="dept-card-body">
+              <ul>
+                <li>名簿作成</li>
+                <li>Googleドライブの整理</li>
+                <li>グループLINEの管理</li>
+                <li>部員に共有する過去問の整理</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="dept-card">
+            <div class="dept-card-header">
+              <span class="dept-icon">💰</span>会計
+            </div>
+            <div class="dept-card-body">
+              <ul>
+                <li>ここに文章を入力</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="dept-card">
+            <div class="dept-card-header">
+              <span class="dept-icon">📣</span>広報
+            </div>
+            <div class="dept-card-body">
+              <ul>
+                <li>ここに文章を入力</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="dept-card">
+            <div class="dept-card-header">
+              <span class="dept-icon">🤝</span>ボランティア
+            </div>
+            <div class="dept-card-body">
+              <ul>
+                <li>ここに文章を入力</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="dept-card">
+            <div class="dept-card-header">
+              <span class="dept-icon">🏢</span>渉外
+            </div>
+            <div class="dept-card-body">
+              <ul>
+                <li>ここに文章を入力</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- フッター -->
+  <footer>
+    <div class="footer-inner">
+      <!-- 左列: コピーライト -->
+      <!-- ★変更ポイント: 年号は自動更新されないので毎年手動で変える -->
+      <div class="footer-col">
+        <p class="footer-copy">© 2026 Hand to Hand</p>
+      </div>
+      <!-- 中列: 住所 -->
+      <!-- ★変更ポイント: 住所が変わった場合はここを編集する -->
+      <div class="footer-col">
+        <p>〒202-8585</p>
+        <p>東京都西東京市新町１−１−２０</p>
+      </div>
+      <!-- 右列: メールアドレス -->
+      <!-- ★変更ポイント: メールアドレスが変わった場合はhref="mailto:..."と表示テキストの両方を変更 -->
+      <div class="footer-col">
+        <p class="label">mail</p>
+        <p><a href="mailto:handtohandmusashino@gmail.com">handtohandmusashino@gmail.com</a></p>
+      </div>
+    </div>
+  </footer>
+<!-- 下線のアニメーション -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // .index(目次)のフェードイン
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.index, .content-right img').forEach(el => observer.observe(el));
+
+    // navのactive切り替え
+    const navLinks = document.querySelectorAll('nav a');
+    const sections = ['nav1','nav2','nav3','nav4'].map(id => document.getElementById(id));
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY + 80;
+      let current = sections[0];
+      sections.forEach(sec => { if (sec && sec.offsetTop <= scrollY) current = sec; });
+      navLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current.id);
+      });
+    });
+  });
+</script>
+</body>
+</html>
